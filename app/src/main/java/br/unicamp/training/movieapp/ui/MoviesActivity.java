@@ -3,11 +3,11 @@ package br.unicamp.training.movieapp.ui;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
 
-import org.json.JSONArray;
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +42,7 @@ public class MoviesActivity extends AppCompatActivity {
                 try {
                     String moviesJsonString = new JSONObject(result).optJSONArray("results").toString();
 
-                    PopularMovie[] movies = buildPopularMovieArray(moviesJsonString);
+                    PopularMovie[] movies = new Gson().fromJson(moviesJsonString, PopularMovie[].class);
 
                     if (movies != null) {
                         PopularMovieAdapter adapter = new PopularMovieAdapter(movies, MoviesActivity.this);
@@ -56,22 +56,6 @@ public class MoviesActivity extends AppCompatActivity {
         };
         mProgressBar.setVisibility(View.VISIBLE);
         manager.getSimpleJson(popularMovies);
-    }
-
-    private PopularMovie[] buildPopularMovieArray(String json) throws JSONException {
-        if (TextUtils.isEmpty(json)) {
-            return null;
-        }
-        JSONArray movieJsonArray = new JSONArray(json);
-        int size = movieJsonArray.length();
-
-        PopularMovie[] result = new PopularMovie[size];
-        for (int index = 0; index < size; index++) {
-            JSONObject item = movieJsonArray.getJSONObject(index);
-            result[index] = new PopularMovie(item);
-        }
-
-        return result;
     }
 
 }

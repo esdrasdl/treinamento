@@ -1,33 +1,47 @@
 package br.unicamp.training.movieapp.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONObject;
 
 public class PopularMovie {
 
     public static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500";
 
+    @SerializedName("adult")
     private boolean adult;
 
+    @SerializedName("backdrop_path")
     private String backdropPath;
 
+    @SerializedName("id")
     private String id;
 
+    @SerializedName("original_title")
     private String originalTitle;
 
+    @SerializedName("release_date")
     private String releaseDate;
 
+    @SerializedName("poster_path")
     private String posterPath;
 
+    @SerializedName("popularity")
     private double popularity;
 
+    @SerializedName("title")
     private String title;
 
+    @SerializedName("vote_average")
     private double voteAverage;
 
+    @SerializedName("vote_count")
     private int voteCount;
 
+    @SerializedName("overview")
     private String overview;
 
+    @SerializedName("movieReady")
     private boolean movieReady;
 
     public PopularMovie() {
