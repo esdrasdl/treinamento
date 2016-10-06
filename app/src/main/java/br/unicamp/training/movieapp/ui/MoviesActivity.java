@@ -6,14 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridView;
 
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import br.unicamp.training.movieapp.R;
 import br.unicamp.training.movieapp.manager.MainScreenManager;
-import br.unicamp.training.movieapp.model.PopularMovie;
+import br.unicamp.training.movieapp.model.Page;
 import br.unicamp.training.movieapp.ui.adapter.PopularMovieAdapter;
 
 public class MoviesActivity extends AppCompatActivity {
@@ -36,26 +31,19 @@ public class MoviesActivity extends AppCompatActivity {
 
     private void loadMovies() {
         MainScreenManager manager = new MainScreenManager();
-        MainScreenManager.InternetCallback popularMovies = new MainScreenManager.InternetCallback() {
+        MainScreenManager.SmartCallback callback = new MainScreenManager.SmartCallback() {
             @Override
-            public void onSuccess(String result) {
-                try {
-                    String moviesJsonString = new JSONObject(result).optJSONArray("results").toString();
-
-                    PopularMovie[] movies = new Gson().fromJson(moviesJsonString, PopularMovie[].class);
-
-                    if (movies != null) {
-                        PopularMovieAdapter adapter = new PopularMovieAdapter(movies, MoviesActivity.this);
-                        mGridView.setAdapter(adapter);
-                    }
-                    mProgressBar.setVisibility(View.GONE);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void onSuccess(Page result) {
+                if (result.movies != null) {
+                    PopularMovieAdapter adapter = new PopularMovieAdapter(result.movies, MoviesActivity.this);
+                    mGridView.setAdapter(adapter);
                 }
+                mProgressBar.setVisibility(View.GONE);
             }
         };
+
         mProgressBar.setVisibility(View.VISIBLE);
-        manager.getSimpleJson(popularMovies);
+        manager.getList(callback);
     }
 
 }

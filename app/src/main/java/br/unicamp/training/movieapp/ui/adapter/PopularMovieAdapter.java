@@ -10,27 +10,29 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import br.unicamp.training.movieapp.R;
 import br.unicamp.training.movieapp.model.PopularMovie;
 
 public class PopularMovieAdapter extends BaseAdapter {
 
-    private PopularMovie[] movies;
+    private List<PopularMovie> movies;
     private Context context;
 
-    public PopularMovieAdapter(PopularMovie[] list, Context context) {
+    public PopularMovieAdapter(List<PopularMovie> list, Context context) {
         movies = list;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return movies.length;
+        return movies.size();
     }
 
     @Override
     public PopularMovie getItem(int position) {
-        return movies[position];
+        return movies.get(position);
     }
 
     @Override

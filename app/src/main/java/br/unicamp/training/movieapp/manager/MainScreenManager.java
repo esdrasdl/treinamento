@@ -1,69 +1,33 @@
 package br.unicamp.training.movieapp.manager;
 
-import android.os.AsyncTask;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
+import br.unicamp.training.movieapp.model.Page;
+import br.unicamp.training.movieapp.services.Service;
+import br.unicamp.training.movieapp.utils.Constants;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainScreenManager {
 
-    public void getSimpleJson(InternetCallback callback) {
-        String url = "http://api.themoviedb.org/3/movie/popular?api_key=87a901020f496977f9d6d508c5d186ec&language=pt-BR";
-        new PopularMovieAsyncTask(callback).execute(url);
-    }
-
-    public interface InternetCallback {
-        void onSuccess(String result);
-    }
-
-    private class PopularMovieAsyncTask extends AsyncTask<String, Object, String> {
-
-        InternetCallback listener;
-
-        public PopularMovieAsyncTask(InternetCallback callback) {
-            listener = callback;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            Reader reader = null;
-            try {
-                URL url = new URL(params[0]);
-                reader = new InputStreamReader(url.openStream());
-                return readInputStreamReader(reader);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    reader.close();
-                } catch (IOException ignored) {
+    public void getList(final SmartCallback smartCallback) {
+        Call<Page> call = Service.getPopularMovieAPI().getPage(Constants.API_KEY, 2);
+        call.enqueue(new Callback<Page>() {
+            @Override
+            public void onResponse(Call<Page> call, Response<Page> response) {
+                if (response.isSuccessful()) {
+                    smartCallback.onSuccess(response.body());
                 }
             }
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(String s) {
-            listener.onSuccess(s);
-        }
+            @Override
+            public void onFailure(Call call, Throwable t) {
+
+            }
+        });
     }
 
-    private String readInputStreamReader(Reader inputStream) {
-        BufferedReader r = new BufferedReader(inputStream);
-        StringBuilder total = new StringBuilder();
-        String line;
-        try {
-            while ((line = r.readLine()) != null) {
-                total.append(line).append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return total.toString();
+    public interface SmartCallback {
+        void onSuccess(Page result);
     }
 
 }

@@ -2,8 +2,6 @@ package br.unicamp.training.movieapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONObject;
-
 public class PopularMovie {
 
     public static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500";
@@ -45,17 +43,6 @@ public class PopularMovie {
     private boolean movieReady;
 
     public PopularMovie() {
-    }
-
-    public PopularMovie(JSONObject item) {
-        setAdult(item.optBoolean("adult"));
-        setTitle(item.optString("title"));
-        setOriginalTitle(item.optString("original_title"));
-        setOverview(item.optString("overview"));
-        setId(item.optString("id"));
-        setVoteCount(item.optInt("vote_count"));
-        setBackdropPath(item.optString("backdrop_path"));
-        setPosterPath(item.optString("poster_path"));
     }
 
     public boolean isAdult() {
