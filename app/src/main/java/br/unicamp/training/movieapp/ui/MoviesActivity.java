@@ -6,10 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridView;
 
+import java.util.HashSet;
+
 import br.unicamp.training.movieapp.R;
 import br.unicamp.training.movieapp.manager.MainScreenManager;
 import br.unicamp.training.movieapp.model.Page;
+import br.unicamp.training.movieapp.model.PopularMovie;
 import br.unicamp.training.movieapp.ui.adapter.PopularMovieAdapter;
+import br.unicamp.training.movieapp.utils.PrefUtils;
 
 public class MoviesActivity extends AppCompatActivity {
 
@@ -35,6 +39,12 @@ public class MoviesActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Page result) {
                 if (result.movies != null) {
+
+                    HashSet<String> names = new HashSet<>();
+                    for (PopularMovie movie : result.movies) {
+                        names.add(movie.getTitle());
+                    }
+                    PrefUtils.setMovieNames(MoviesActivity.this, names);
                     PopularMovieAdapter adapter = new PopularMovieAdapter(result.movies, MoviesActivity.this);
                     mGridView.setAdapter(adapter);
                 }
