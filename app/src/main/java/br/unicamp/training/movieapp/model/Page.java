@@ -8,6 +8,6 @@ import java.util.List;
 public class Page {
 
     @SerializedName("results")
-    public List<PopularMovie> movies;
+    public List<Movie> movies;
 
 }

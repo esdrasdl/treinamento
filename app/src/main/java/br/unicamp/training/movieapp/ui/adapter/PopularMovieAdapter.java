@@ -13,14 +13,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import br.unicamp.training.movieapp.R;
-import br.unicamp.training.movieapp.model.PopularMovie;
+import br.unicamp.training.movieapp.model.Movie;
 
 public class PopularMovieAdapter extends BaseAdapter {
 
-    private List<PopularMovie> movies;
+    private List<Movie> movies;
     private Context context;
 
-    public PopularMovieAdapter(List<PopularMovie> list, Context context) {
+    public PopularMovieAdapter(List<Movie> list, Context context) {
         movies = list;
         this.context = context;
     }
@@ -31,7 +31,7 @@ public class PopularMovieAdapter extends BaseAdapter {
     }
 
     @Override
-    public PopularMovie getItem(int position) {
+    public Movie getItem(int position) {
         return movies.get(position);
     }
 
@@ -64,8 +64,8 @@ public class PopularMovieAdapter extends BaseAdapter {
             title = (TextView) view.findViewById(R.id.item_movie_title);
         }
 
-        public void apply(PopularMovie movie) {
-            String posterURL = PopularMovie.IMAGE_BASE_URL + movie.getBackdropPath();
+        public void apply(Movie movie) {
+            String posterURL = Movie.IMAGE_BASE_URL + movie.getBackdropPath();
             Picasso.with(context).load(posterURL).into(cover);
             title.setText(movie.getTitle());
         }
